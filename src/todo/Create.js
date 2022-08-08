@@ -7,7 +7,8 @@ const Create = ({ todos, setTodos }) => {
       alert("Please enter a title");
       return;
     }
-    let last_id = todos[todos.length - 1].id;
+    let count = todos.length;
+    let last_id = count == 0 ? 0 : todos[count - 1].id;
     setTodos([...todos, { id: last_id + 1, title }]);
     setTitle("");
   };
