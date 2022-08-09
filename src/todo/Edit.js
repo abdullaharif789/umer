@@ -4,9 +4,12 @@ import Create from "./Create";
 
 function Edit({ todo, todos, setTodos }) {
   const [modal, setModal] = useState(false);
-  const [title, setTitle] = useState(todo.title);
+  const [title, setTitle] = useState();
 
-  const toggle = () => setModal(!modal);
+  const toggle = () => {
+    setModal(!modal);
+    setTitle(todo.title);
+  };
 
   const updateTodo = () => {
     if (title === "") {
@@ -16,7 +19,7 @@ function Edit({ todo, todos, setTodos }) {
     // Update Todo
     let temp_todos = [...todos];
     let todo_index = temp_todos.map((todo) => todo.id).indexOf(todo.id);
-    temp_todos[todo_index] = { id: todo.id, title };
+    temp_todos[todo_index].title = title;
     setTodos(temp_todos);
     // Empty Title
     setTitle("");

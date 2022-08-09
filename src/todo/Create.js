@@ -9,7 +9,7 @@ const Create = ({ todos, setTodos }) => {
     }
     let count = todos.length;
     let last_id = count == 0 ? 0 : todos[count - 1].id;
-    setTodos([...todos, { id: last_id + 1, title }]);
+    setTodos([...todos, { id: last_id + 1, title, checked: false }]);
     setTitle("");
   };
   return (
