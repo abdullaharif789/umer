@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { v4 as uuidv4 } from "uuid";
 
 const Create = ({ todos, setTodos }) => {
   const [title, setTitle] = useState("");
@@ -7,9 +8,11 @@ const Create = ({ todos, setTodos }) => {
       alert("Please enter a title");
       return;
     }
-    let count = todos.length;
-    let last_id = count == 0 ? 0 : todos[count - 1].id;
-    setTodos([...todos, { id: last_id + 1, title, checked: false }]);
+
+    setTodos([
+      { id: uuidv4(), title, checked: false, completed: false },
+      ...todos,
+    ]);
     setTitle("");
   };
   return (

@@ -23,9 +23,20 @@ const Show = ({ todos, setTodos }) => {
     setTodos(temp_todos);
   };
 
+  const complete = (id) => {
+    let temp_todos = [...todos];
+    let todo_index = temp_todos.map((todo) => todo.id).indexOf(id);
+    temp_todos[todo_index].complete = !temp_todos[todo_index].complete;
+    setTodos(temp_todos);
+  };
   return (
     <>
       <div>
+        {todos.filter((todo) => todo.checked).length > 0 && (
+          <button className="btn btn-danger mt-5" onClick={deleteSelectedTodos}>
+            Delete Selected TODOS
+          </button>
+        )}
         <table className="table mt-5">
           <thead>
             <tr>
@@ -39,7 +50,6 @@ const Show = ({ todos, setTodos }) => {
                   />
                 </div>
               </th>
-              <th>ID</th>
               <th className="w-75">TODO</th>
               <th>Action</th>
             </tr>
@@ -57,10 +67,17 @@ const Show = ({ todos, setTodos }) => {
                     />
                   </div>
                 </td>
-                <td>{todo.id}</td>
-                <td>{todo.title}</td>
+                <td className={todo.complete ? "cut-text" : ""}>
+                  {todo.title}
+                </td>
                 <td>
                   <div className="d-flex">
+                    <button
+                      className="btn btn-success mr-2"
+                      onClick={() => complete(todo.id)}
+                    >
+                      {todo.complete ? "Incomplete" : "Complete"}
+                    </button>
                     <Edit setTodos={setTodos} todos={todos} todo={todo} />
                     <button
                       className="btn btn-danger ml-2"
@@ -74,11 +91,6 @@ const Show = ({ todos, setTodos }) => {
             ))}
           </tbody>
         </table>
-        {todos.filter((todo) => todo.checked).length > 0 && (
-          <button className="btn btn-danger" onClick={deleteSelectedTodos}>
-            Delete Selected TODOS
-          </button>
-        )}
       </div>
     </>
   );

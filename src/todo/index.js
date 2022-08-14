@@ -1,37 +1,43 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Show from "./Show";
 import Create from "./Create";
+import axios from "axios";
+import { v4 as uuidv4 } from "uuid";
 
 const Todo = () => {
-  const [todos, setTodos] = useState([
-    // {
-    //   id: 1,
-    //   title: "Buy Milk",
-    // },
-    // {
-    //   id: 2,
-    //   title: "Eat Food",
-    // },
-    // {
-    //   id: 3,
-    //   title: "Take Shower",
-    // },
-    // {
-    //   id: 4,
-    //   title: "Change Clothes",
-    // },
-    // {
-    //   id: 5,
-    //   title: "Go to restaurant",
-    // },
-  ]);
+  const [todos, setTodos] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const loadTodos = async () => {
+    setLoading(true);
+    await axios
+      .get("https://jsonplaceholder.typicode.com/todos")
+      .then(({ data }) => {
+        let temp_todos = data.map((todo) => ({
+          id: uuidv4(),
+          title: todo.title,
+          checked: false,
+          completed: false,
+        }));
+        setTodos(temp_todos);
+      });
+    setLoading(false);
+  };
+  useEffect(() => {
+    loadTodos();
+  }, []);
   return (
     <div className="container">
       <div className="card mt-5">
         <div className="card-header">TODO APP BY UMER</div>
         <div className="card-body">
           <Create todos={todos} setTodos={setTodos} />
-          <Show todos={todos} setTodos={setTodos} />
+          {loading ? (
+            <div className="d-block text-center mt-2">
+              <div class="spinner-border text-success"></div>
+            </div>
+          ) : (
+            <Show todos={todos} setTodos={setTodos} />
+          )}
         </div>
       </div>
     </div>
