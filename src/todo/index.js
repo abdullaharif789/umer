@@ -9,17 +9,15 @@ const Todo = () => {
   const [loading, setLoading] = useState(true);
   const loadTodos = async () => {
     setLoading(true);
-    await axios
-      .get("https://jsonplaceholder.typicode.com/todos")
-      .then(({ data }) => {
-        let temp_todos = data.map((todo) => ({
-          id: uuidv4(),
-          title: todo.title,
-          checked: false,
-          completed: false,
-        }));
-        setTodos(temp_todos);
-      });
+    await axios.get("http://localhost:4000/todos").then(({ data }) => {
+      let temp_todos = data.data.map((todo) => ({
+        id: todo._id,
+        title: todo.title,
+        checked: false,
+        completed: false,
+      }));
+      setTodos(temp_todos);
+    });
     setLoading(false);
   };
   useEffect(() => {

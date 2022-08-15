@@ -1,9 +1,11 @@
 import React, { useState } from "react";
+import axios from "axios";
 import Edit from "./Edit";
 
 const Show = ({ todos, setTodos }) => {
-  const deleteTodo = (id) => {
+  const deleteTodo = async (id) => {
     setTodos(todos.filter((todo) => todo.id !== id));
+    await axios.delete(`http://localhost:4000/todos/${id}`);
   };
   const [globalSelect, setGlobalSelect] = useState(false);
   const toggleGloablSelectTodos = (e) => {

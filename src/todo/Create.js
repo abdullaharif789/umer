@@ -1,19 +1,25 @@
 import React, { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
+import axios from "axios";
 
 const Create = ({ todos, setTodos }) => {
   const [title, setTitle] = useState("");
-  const addTodo = () => {
+  const addTodo = async () => {
     if (title === "") {
       alert("Please enter a title");
       return;
     }
 
-    setTodos([
-      { id: uuidv4(), title, checked: false, completed: false },
-      ...todos,
-    ]);
-    setTitle("");
+    await axios
+      .post(`http://localhost:4000/todos`, { title })
+      .then(({ data }) => {
+        let new_todo = data.data;
+        setTodos([
+          { id: new_todo._id, title, checked: false, completed: false },
+          ...todos,
+        ]);
+        setTitle("");
+      });
   };
   return (
     <div>
